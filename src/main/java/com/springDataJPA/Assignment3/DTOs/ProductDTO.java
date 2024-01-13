@@ -8,10 +8,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class ProductDTO {
     private String title;
     private String description;
-    private Double Price;
+    private Double price;
     private String imageURL;
-    private CategoryEntity category;
+    private String category;
 }

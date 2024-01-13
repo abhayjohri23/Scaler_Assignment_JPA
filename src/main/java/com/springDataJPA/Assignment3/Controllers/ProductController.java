@@ -2,12 +2,14 @@ package com.springDataJPA.Assignment3.Controllers;
 
 import com.springDataJPA.Assignment3.DTOs.ProductDTO;
 import com.springDataJPA.Assignment3.Services.ProductServiceImpl;
+import com.springDataJPA.Assignment3.UserDefinedExceptions.DataPersistenceException;
+import com.springDataJPA.Assignment3.UserDefinedExceptions.NoRecordFoundException;
+import com.springDataJPA.Assignment3.UserDefinedExceptions.UserDefinedProductExceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -19,33 +21,36 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String getProductById(@PathVariable("id") Long productID){
-        return "Product ID provided is: "+productID;
+    public ProductDTO getProductById(@PathVariable("id") Long productID) throws NoRecordFoundException {
+        return this.productService.getProductById(productID);
     }
     @GetMapping("/all")
-    public List<ProductDTO> getAllProducts(){
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setTitle("OMRON Blood pressure Machine");
-        productDTO.setDescription("Check the blood pressure any moment, with ease!");
-        productDTO.setPrice(400.0);
-
-        List<ProductDTO> list = new ArrayList<ProductDTO>();
-        list.add(productDTO);
-        return list;
+    public List<ProductDTO> getAllProducts() throws NoRecordFoundException {
+        return this.productService.getAllProducts();
     }
     @PostMapping("/add/")
-    public ProductDTO addProduct(@RequestBody ProductDTO productDTO){
-        return productDTO;
+    public ProductDTO addProduct(@RequestBody ProductDTO productDTO) throws DataPersistenceException {
+        return this.productService.addProduct(productDTO);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<String> updateProduct(@RequestBody ProductDTO productDTO, @PathVariable("id") Long productID){
-        return new ResponseEntity(productDTO.toString() + "\n with productID", HttpStatus.OK);
+    public ProductDTO updateProduct(@RequestBody ProductDTO productDTO, @PathVariable("id") Long productID) throws UserDefinedProductExceptions{
+        return this.productService.updateProduct(productDTO,productID);
     }
 
     @DeleteMapping("/delete/{id}")
     public ProductDTO deleteProduct(@PathVariable("id") Long productID){
-        return null;
+        ProductDTO deletedProduct = new ProductDTO();
+        deletedProduct.setTitle("product with productID: "+ productID);
+        deletedProduct.setDescription("Deleted product");
+        deletedProduct.setCategory("myCategory");
+
+        return deletedProduct;
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<String> productExceptionHandler(UserDefinedProductExceptions exception){
+        return new ResponseEntity(exception.getMessage(),exception.getStatusCode());
     }
 
 }

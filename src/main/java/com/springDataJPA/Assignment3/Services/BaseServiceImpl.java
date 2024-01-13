@@ -1,12 +1,15 @@
 package com.springDataJPA.Assignment3.Services;
 
-import com.springDataJPA.Assignment3.ModelsOrEntities.ProductEntity;
+import com.springDataJPA.Assignment3.DTOs.ProductDTO;
+import com.springDataJPA.Assignment3.UserDefinedExceptions.DataPersistenceException;
+import com.springDataJPA.Assignment3.UserDefinedExceptions.NoRecordFoundException;
+
 import java.util.List;
 
 public interface BaseServiceImpl {
-    ProductEntity getProductById(Long productID);
-    List<ProductEntity> getAllProducts();
-    ProductEntity addProduct(ProductEntity productEntity);
-    ProductEntity updateProduct(ProductEntity productEntity);
-    ProductEntity deleteProductByID(Long productId);
+    ProductDTO getProductById(Long productID) throws NoRecordFoundException;
+    List<ProductDTO> getAllProducts() throws NoRecordFoundException;
+    ProductDTO addProduct(ProductDTO productDTO) throws DataPersistenceException;
+    ProductDTO updateProduct(ProductDTO productDTO,Long productID) throws DataPersistenceException;
+    ProductDTO deleteProductByID(Long productId);
 }
