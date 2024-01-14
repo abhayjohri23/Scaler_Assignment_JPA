@@ -77,8 +77,10 @@ public class ProductServiceImpl implements BaseServiceImpl {
 
         CategoryEntity categoryEntity = optionalCategoryEntity.get();
         ProductEntity product = getProductEntityFromProductDTO(productDTO,categoryEntity);
-        ProductEntity insertedProduct = this.productRepository.save(product);
-        return getProductDTOFromProductEntity(insertedProduct);
+        product.setId(productID);
+
+        ProductEntity updatedProduct = this.productRepository.save(product);
+        return getProductDTOFromProductEntity(updatedProduct);
     }
 
     @Override

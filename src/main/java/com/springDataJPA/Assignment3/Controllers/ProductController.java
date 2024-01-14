@@ -5,11 +5,9 @@ import com.springDataJPA.Assignment3.Services.ProductServiceImpl;
 import com.springDataJPA.Assignment3.UserDefinedExceptions.DataPersistenceException;
 import com.springDataJPA.Assignment3.UserDefinedExceptions.NoRecordFoundException;
 import com.springDataJPA.Assignment3.UserDefinedExceptions.UserDefinedProductExceptions;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
