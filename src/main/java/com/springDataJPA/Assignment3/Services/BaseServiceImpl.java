@@ -11,5 +11,5 @@ public interface BaseServiceImpl {
     List<ProductDTO> getAllProducts() throws NoRecordFoundException;
     ProductDTO addProduct(ProductDTO productDTO) throws DataPersistenceException;
     ProductDTO updateProduct(ProductDTO productDTO,Long productID) throws DataPersistenceException;
-    ProductDTO deleteProductByID(Long productId);
+    ProductDTO deleteProductByID(Long productId) throws NoRecordFoundException;
 }

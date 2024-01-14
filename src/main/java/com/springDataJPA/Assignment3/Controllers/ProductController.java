@@ -37,13 +37,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ProductDTO deleteProduct(@PathVariable("id") Long productID){
-        ProductDTO deletedProduct = new ProductDTO();
-        deletedProduct.setTitle("product with productID: "+ productID);
-        deletedProduct.setDescription("Deleted product");
-        deletedProduct.setCategory("myCategory");
-
-        return deletedProduct;
+    public ProductDTO deleteProduct(@PathVariable("id") Long productID) throws NoRecordFoundException {
+        return this.productService.deleteProductByID(productID);
     }
 
     @ExceptionHandler

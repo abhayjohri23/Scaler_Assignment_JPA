@@ -84,8 +84,14 @@ public class ProductServiceImpl implements BaseServiceImpl {
     }
 
     @Override
-    public ProductDTO deleteProductByID(Long productId) {
-        return null;
+    public ProductDTO deleteProductByID(Long productID) throws NoRecordFoundException{
+        if(!this.productRepository.existsById(productID))
+            throw new NoRecordFoundException("No product exist with given ID");
+        Optional<ProductEntity> optionalProduct = this.productRepository.findById(productID);
+
+        if(optionalProduct.isEmpty())       throw new NoRecordFoundException("No product exist with this ID");
+        this.productRepository.deleteById(productID);
+        return this.getProductDTOFromProductEntity(optionalProduct.get());
     }
 
     private ProductEntity getProductEntityFromProductDTO(ProductDTO productDTO, CategoryEntity category){
