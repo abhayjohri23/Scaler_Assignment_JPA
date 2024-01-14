@@ -2,8 +2,10 @@ package com.springDataJPA.Assignment3.Controllers;
 
 import com.springDataJPA.Assignment3.DTOs.CategoryDTO;
 import com.springDataJPA.Assignment3.Services.CategoryServices;
+import com.springDataJPA.Assignment3.UserDefinedExceptions.DataPersistenceException;
 import com.springDataJPA.Assignment3.UserDefinedExceptions.NoRecordFoundException;
 import com.springDataJPA.Assignment3.UserDefinedExceptions.UserDefinedProductExceptions;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,11 @@ public class CategoryController {
     @GetMapping("/all")
     public List<CategoryDTO> lisOfCategories(){
         return this.categoryServices.getAllCategories();
+    }
+
+    @PostMapping("/add")
+    public CategoryDTO addCategory(@RequestBody CategoryDTO categoryDTO) throws DataPersistenceException {
+        return this.categoryServices.addCategory(categoryDTO);
     }
 
     @ExceptionHandler

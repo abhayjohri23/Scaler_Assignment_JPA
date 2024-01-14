@@ -3,7 +3,9 @@ package com.springDataJPA.Assignment3.Services;
 import com.springDataJPA.Assignment3.DTOs.CategoryDTO;
 import com.springDataJPA.Assignment3.ModelsOrEntities.CategoryEntity;
 import com.springDataJPA.Assignment3.Repositories.CategoryRepository;
+import com.springDataJPA.Assignment3.UserDefinedExceptions.DataPersistenceException;
 import com.springDataJPA.Assignment3.UserDefinedExceptions.NoRecordFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,6 +39,12 @@ public class CategoryServices {
         return listOfCategoryDTOs;
     }
 
+    public CategoryDTO addCategory(CategoryDTO categoryDTO) throws DataPersistenceException {
+        if(categoryDTO == null)     throw new DataPersistenceException("Data persistence issues with category", HttpStatus.BAD_REQUEST);
+        this.categoryRepository.save(this.getCategoryEntityFromCategoryDTO(categoryDTO));
+        return categoryDTO;
+    }
+
     private CategoryEntity getCategoryEntityFromCategoryDTO(CategoryDTO categoryDTO,Long categoryID){
         CategoryEntity category = CategoryEntity.builder()
                 .categoryName(categoryDTO.getCategoryName())
@@ -44,6 +52,13 @@ public class CategoryServices {
                 .build();
         category.setId(categoryID);
         return category;
+    }
+
+    private CategoryEntity getCategoryEntityFromCategoryDTO(CategoryDTO categoryDTO){
+        return CategoryEntity.builder()
+                .categoryName(categoryDTO.getCategoryName())
+                .listOfProducts(null)
+                .build();
     }
 
     private CategoryDTO getCategoryDTOFromCategoryEntity(CategoryEntity categoryEntity){
